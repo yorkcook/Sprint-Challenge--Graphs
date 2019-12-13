@@ -21,7 +21,14 @@ player = Player("Name", world.startingRoom)
 
 
 # FILL THIS IN
-traversalPath = ['n', 's']
+traversalPath = []
+
+reverse_direction = {'n':'s', 'e':'w', 's':'n', 'w':'e'}
+
+previous_room = [None]
+
+visited = {}
+
 
 
 # TRAVERSAL TEST
