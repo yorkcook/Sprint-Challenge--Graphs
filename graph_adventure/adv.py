@@ -21,8 +21,52 @@ player = Player("Name", world.startingRoom)
 
 
 # FILL THIS IN
-traversalPath = ['n', 's']
+traversalPath = []
 
+reverse_direction = {'n':'s', 'e':'w', 's':'n', 'w':'e'}
+
+previous_room = [None]
+
+visited = {}
+
+rooms_directions = {}
+
+
+#check directions for exits
+def check_directions(room_id):
+    all_directions = []
+    if 'n' in roomGraph[room_id][1].keys():
+        all_directions.append('n')
+    if 'e' in roomGraph[room_id][1].keys():
+        all_directions.append('e')
+    if 's' in roomGraph[room_id][1].keys():
+        all_directions.append('s')
+    if 'w' in roomGraph[room_id][1].keys():
+        all_directions.append('w')
+    return all_directions
+
+#place array of room directions into room dir dict
+#add to visited
+#add all directions
+while len(visited) < len(roomGraph):
+    room_id = player.currentRoom.id
+    if room_id not in rooms_directions:
+        visited[room_id] = room_id
+        rooms_directions[room_id] = check_directions(room_id)
+
+    #see if any more directions to go
+    if len(rooms_directions[room_id]) is 0:
+        previous_direction = previous_room.pop()
+        traversalPath.append(previous_direction)
+        player.travel(previous_direction)
+
+
+    #new direction to travel and keep track
+    else:
+        next_direction = rooms_directions[room_id].pop(0)
+        traversalPath.append(next_direction)
+        previous_room.append(reverse_direction[next_direction])
+        player.travel(next_direction)
 
 # TRAVERSAL TEST
 visited_rooms = set()
